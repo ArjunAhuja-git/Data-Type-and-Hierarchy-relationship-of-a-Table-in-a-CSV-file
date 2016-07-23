@@ -1,0 +1,29 @@
+1.  Comma delimited structured file having 12 fields.
+2.  Data Type and length of fields
+        Ticket Number - Integer
+        Status - Character(7)
+        Client - Character(6)
+        Category - Character(10)
+        Severity - Character(5)
+        Date Created - Date
+        Date Last Modified - Date
+        Response Date -Date
+        Date Closed - Date
+        Time Spent - Integer
+        Parent Ticket - Integer
+3.  There is one to many relation between Parent Ticket to Ticket
+4.  Date Created < Response Date < Date Last Modified < Date Closed
+5.  Ticket Number is unique
+6.  Assigned is unique
+7.  Status has two possible values "Closed" & "Open"
+8.  Severity has only one value "Sev 4"
+9.  Client has two possible values "Google" & "IBM"
+10. Category has two possible values "Bug" & "New Change"
+11. Parent Ticket has two possible values 5433 & 5996
+12. Time Spent as two possible values 941 & 3688
+
+Ticket Number,Assigned,Status,Client,Category,Severity,Date Created,Date Last Modified,Response Date,Date Closed,Time Spent (min),Parent Ticket
+
+5377, Manjit,Closed,Google,New Change,Sev 4,2012-03-05-12.20.32,2016-02-16-14.18.06,2012-10-01-23.02.10,2016-02-16-14.18.06,941,5433
+5378,Arjun,Closed,IBM,Bug,Sev 4,2012-05-29-08.05.19,2016-03-31-17.44.31,2012-10-02-09.50.36,2015-06-04-11.50.14,3688,5433
+5379,Naveen,Open,IBM,Bug,Sev 4,2013-05-29-08.05.19,2014-03-31-17.44.31,2013-10-02-09.50.36,2014-06-04-11.50.14,3688,5896
