@@ -18,6 +18,77 @@ def GetAllCombinations(input): #to get all combinations of columns may make the 
 def num_missing(x):
   return sum(x.isnull())
 
+#testing datetime formats
+
+from datetime import datetime
+
+fmts = ('%Y','%b %d, %Y','%b %d, %Y','%B %d, %Y','%B %d %Y','%m/%d/%Y','%m-%d-%Y','%m/%d/%y','%m-%d-%y','%y-%m-%d','%Y-%m-%d','%Y/%m/%d','%y/%m/%d','%b %Y','%B%Y','%b %d,%Y')
+tests = [
+    # (Type, Test)
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d")),
+    (datetime, lambda value: datetime.strptime(value, "%y/%m/%d")),
+    (datetime, lambda value: datetime.strptime(value, "%y-%m-%d")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%y")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%y")),
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y %H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y-%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y.%H:%M:%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y.%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y/%m/%d-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%Y-%m-%d-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%Y-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%Y-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d/%m/%y-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%d-%m-%y-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m-%d-%Y-%H.%M.%S")),
+    (datetime, lambda value: datetime.strptime(value, "%m/%d/%Y-%H.%M.%S"))
+]
+
+def getType(value):
+	for typ, test in tests:
+	    try:
+	        test(value)
+	        return typ
+	    except ValueError:
+	        continue
+	# No match
+	return str
+
 #--------second get the column types using messyTables---------#
 
 #CASE:1 from Messy Tables
@@ -42,7 +113,7 @@ types = type_guess(row_set.sample, strict=True)
 # and tell the row set to apply these types to
 # each row when traversing the i:
 row_set.register_processor(types_processor(types))
-
+		
 
 #-------doing rest of operations using pandas------#
 dataFrame =	pd.read_csv(datafile)
@@ -56,7 +127,20 @@ one_to_one_relation = []
 many_to_one_relation = []
 super_keys = []
 StoringAllRelationsInADictionaryOfTuples = {}
-for i in xrange(1,len(ListOfCombinationsOfColumns)-1):
+
+for x in xrange(0,len(ListColumns)):
+	datet = False
+	tempList = dataFrame[ListColumns[x]].tolist()
+	for i in xrange(1,rw):
+		if(not type(tempList[i]) == str):
+			break
+		if(getType(tempList[i]) == datetime):
+			datet = True
+			break
+	if(datet):
+		types[x] = datetime
+
+for i in xrange(1,len(ListOfCombinationsOfColumns)-1): #taking all 2^n-2 combinations of columns
 	col_2 = []
 	for y in xrange(0,len(ListOfCombinationsOfColumns[i])):
 		if(y==0):
@@ -64,7 +148,7 @@ for i in xrange(1,len(ListOfCombinationsOfColumns)-1):
 		else:
 			col_2.append(dataFrame[ListOfCombinationsOfColumns[i][y]].tolist())
 	col_2 = map(list, zip(*col_2))               #Transpose of original Col_2
-	col_2_tuples = [tuple(l) for l in col_2]
+	col_2_tuples = [tuple(l) for l in col_2]	 #Taking a list of columns and tranforming their rows into tuples
 	#Tuple to Compare
 	for_primary_key_and_file_breaking[i] = []
 	for j in xrange(0,len(ListColumns)):
@@ -92,7 +176,7 @@ for i in xrange(1,len(ListOfCombinationsOfColumns)-1):
 				many_to_one_relation.append([ListOfCombinationsOfColumns[i],[ListColumns[j]]])
 			else:
 				one_to_one_relation.append([ListOfCombinationsOfColumns[i],[ListColumns[j]]])
-	StoringAllRelationsInADictionaryOfTuples[tuple(dataFrame[ListOfCombinationsOfColumns[i][y]].tolist())] = for_primary_key_and_file_breaking[i]
+	StoringAllRelationsInADictionaryOfTuples[tuple(ListOfCombinationsOfColumns[i])] = for_primary_key_and_file_breaking[i]
 
 
 #Finished Storing Function Dependencies in One to One and Many to One Lists! #:-( taking a lot of time to ru)
@@ -124,21 +208,48 @@ else:
 AllCombinationsOfPrimaryKeyFor2NFNormalisation = GetAllCombinations(primary_key)
 ColumnsToRemove = []
 ExtraTables = []
-print len(AllCombinationsOfPrimaryKeyFor2NFNormalisation)
 for i in xrange(0,len(ListColumns)):
 	for x in xrange(1,len(AllCombinationsOfPrimaryKeyFor2NFNormalisation)-1):
 		if(ListColumns[i] not in AllCombinationsOfPrimaryKeyFor2NFNormalisation[x]):
 			if(ListColumns[i] in StoringAllRelationsInADictionaryOfTuples[tuple(AllCombinationsOfPrimaryKeyFor2NFNormalisation[x])]):
 				ColumnsToRemove.append(ListColumns[i])
-				ExtraTables.append([AllCombinationsOfPrimaryKeyFor2NFNormalisation[x].append(ListColumns[i])])
+				A = list(AllCombinationsOfPrimaryKeyFor2NFNormalisation[x])
+				A.append(ListColumns[i])
+				ExtraTables.append(A)
 				break
 
-print ColumnsToRemove
-print ExtraTables
-
 #TODO remove Columns from MAIN TABLE!
-
+#3nf normalisation
+ColumnsLeft = [x for x in ListColumns if x not in ColumnsToRemove] #updated main table after 2nf normalisation
 #update list column Removed
+
+ColumnsExceptPrimaryKeyNow = [x for x in ColumnsLeft if x not in primary_key]
+
+#3nf Relations
+ExtraTablesAfter3NF = []
+ColumnsToRemoveAfter3NF = []
+AllCombinationsOfNonPrimaryKeyFor3NFNormalisation = GetAllCombinations(ColumnsExceptPrimaryKeyNow)
+
+for x in AllCombinationsOfNonPrimaryKeyFor3NFNormalisation:
+	print x
+for i in xrange(0,len(ListColumns)):
+	for x in xrange(1,len(AllCombinationsOfNonPrimaryKeyFor3NFNormalisation)-1):
+		if(ListColumns[i] not in AllCombinationsOfNonPrimaryKeyFor3NFNormalisation[x]):
+			if(AllCombinationsOfNonPrimaryKeyFor3NFNormalisation[x] not in super_keys):
+				if(ListColumns[i] in StoringAllRelationsInADictionaryOfTuples[tuple(AllCombinationsOfNonPrimaryKeyFor3NFNormalisation[x])]):
+					ColumnsToRemoveAfter3NF.append(ListColumns[i])
+					A = list(AllCombinationsOfNonPrimaryKeyFor3NFNormalisation[x])
+					A.append(ListColumns[i])
+					ExtraTables.append(A)
+					break
+
+print ExtraTables
+print ColumnsToRemoveAfter3NF
+
+ColumnsLeft = [x for x in ListColumns if x not in ColumnsToRemoveAfter3NF]
+
+
+
 
 
 
